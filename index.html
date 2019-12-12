@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel='stylesheet' href='styles.css'>
+</head>
+<body>
+
+    <div id='clock-wrapper'>
+        <div id='user-select'>
+            <div id='session-inp'>
+                <h3>Session</h3>
+                <div id='up-arr-cont'>
+                    <img id='up-arrows' src='up_arrow.png'  alt='' onclick='sessionInc()'>
+                </div>
+                <h5 id='session-time'></h5>
+                <div id='down-arr-cont'>
+                    <img id='down-arrows' src='down_arrow.png' alt='' onclick='sessionDec()'>
+                </div>
+            </div>
+            <div id='break-inp'>
+                <h3>Break</h3>
+                <div id='up-arr-cont'>
+                    <img id='up-arrows' src='up_arrow.png'  alt='' onclick='breakInc()'>
+                </div>
+                <h5 id='break-time'>5:00</h5>
+                <div id='down-arr-cont'>
+                    <img id='down-arrows' src='down_arrow.png' alt='' onclick='breakDec()'>
+                </div>
+            </div>
+        </div>
+
+        <div id='timer-display'>
+            <img id='play-but' src='play.png' alt='' onclick='startTimer()'>
+            <img id='pause-but' src='pause.png' alt='' onclick='pauseTimer()'>
+            <img id='restart-but' src='restart.png' alt='' onclick='stopTimer()'>
+            <img id='stop-but' src='stop.png' alt='' onclick='stopTimer()'>
+            <div id='disp-wrapper'>
+                <div id='timer'>
+                    <h3 id='clock-title'>Session</h3>
+                    <div id='clock'></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <p id='clock-min'></p>
+    <p id='clock-sec'></p>
+
+
+    <script>
+
+        
+
+
+        
+        var sessionTimeInput = 25;
+        var breakTimeInput = 5;
+        var timeDispMinutes = sessionTimeInput - 1;
+        var timeDispSeconds = 59;
+        var timer;
+
+        document.getElementById('session-time').innerHTML = sessionTimeInput + ':00';
+        document.getElementById('break-time').innerHTML = breakTimeInput + ':00';
+        document.getElementById('clock').innerHTML = sessionTimeInput + ':00';
+        
+
+
+        function sessionInc(){
+            sessionTimeInput += 1;
+            timeDispMinutes = sessionTimeInput - 1;
+            document.getElementById('session-time').innerHTML = sessionTimeInput + ':00';
+            document.getElementById('clock').innerHTML = sessionTimeInput + ':00';
+        }
+
+        function sessionDec(){
+            sessionTimeInput -= 1;
+            timeDispMinutes = sessionTimeInput - 1;
+            document.getElementById('session-time').innerHTML = sessionTimeInput + ':00';
+            document.getElementById('clock').innerHTML = sessionTimeInput + ':00';
+        }
+
+        
+        function breakInc(){
+            breakTimeInput += 1;
+            document.getElementById('break-time').innerHTML = breakTimeInput + ':00';
+        }
+
+        function breakDec(){
+            breakTimeInput -= 1;
+            document.getElementById('break-time').innerHTML = breakTimeInput + ':00';
+        }
+
+        
+        function pauseTimer(){
+            clearInterval(timer);
+        }
+
+
+
+        function stopTimer(){
+            clearInterval(timer);
+            timeDispMinutes = sessionTimeInput - 1;
+            timeDispSeconds = 59;
+            document.getElementById('clock').innerHTML = sessionTimeInput + ':00';
+        }
+
+        function startTimer(){
+            timer = setInterval(countdown, 1000);
+            var breakTime = true;
+           
+            
+
+            function countdown(){
+                
+                if (timeDispSeconds < 10){timeDispSeconds = '0' + timeDispSeconds}
+                            
+                document.getElementById('clock').innerHTML = timeDispMinutes + ':' + timeDispSeconds;
+                
+
+                if(timeDispSeconds == 0){
+                    if(timeDispMinutes == 0 && breakTime == true){
+                        timeDispMinutes = breakTimeInput - 1;
+                        timeDispSeconds = 59;
+                        document.getElementById('clock-title').innerHTML = 'Break';
+                        
+                        breakTime = false;
+                    } else if(timeDispMinutes == 0 && breakTime == false){
+                        document.getElementById('clock-title').innerHTML = 'Session';
+                        timeDispMinutes = sessionTimeInput - 1;
+                        timeDispSeconds = 59;
+                        
+                        breakTime = true;
+                    } else {                        
+                        timeDispMinutes -= 1;
+                        timeDispSeconds = 59;
+                    }
+                } else {
+                    timeDispSeconds -= 1;                    
+                }
+            }
+        }
+
+
+
+
+    </script>
+
+</body>
+</html>
